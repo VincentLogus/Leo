@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Divine Tarot Reveal</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #1b1a2f, #3e2f5b);
+      color: #fdf6e3;
+      font-family: 'Noto Sans Thai', 'Georgia', serif;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px #ffd700;
+    }
+    .card-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      transition: opacity 0.5s;
+    }
+    .card {
+  position: relative;
+  width: 150px;
+  height: 220px;
+  border: 2px solid #fff3;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 0 10px #fff3;
+  transition: transform 0.3s;
+}
+	.card-name {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.85);
+  color: #1b1a2f;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.card:hover .card-name {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .card-name {
+    opacity: 1;
+  }
+}
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .meaning-box {
+      display: none;
+      margin-top: 30px;
+    }
+    .selected-card {
+      width: 200px;
+      height: 300px;
+      margin: 0 auto 20px auto;
+      border: 2px solid #fff3;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #d4af37;
+      overflow: hidden;
+    }
+    .selected-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .meaning-text {
+      font-size: 1.2em;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #fff3;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 0 15px #d4af37;
+    }
+    .back-button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #d4af37;
+      color: #1b1a2f;
+      cursor: pointer;
+      box-shadow: 0 0 10px #d4af37;
+      transition: background-color 0.3s;
+    }
+    .back-button:hover {
+      background-color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Choose Your Destiny</h1>
+  <div class="card-container" id="cardContainer"></div>
+
+  <div class="meaning-box" id="meaningBox">
+    <div id="selectedCardName" style="font-size: 1.4em; font-weight: bold; margin-bottom: 10px;"></div>
+    <div class="selected-card" id="selectedCardImage"></div>
+    <div class="meaning-text" id="meaningText"></div>
+    <button class="back-button" id="backButton">🔙 Back</button>
+  </div>
+
+  <script>
+
+
+    const cardData = [
+      {
+    image: "https://drive.google.com/thumbnail?id=154toaPjHLIRp3aLAQ0OKt6xGBRE6ZbdK",
+    name: "The Shrubbery",
+    meaning: `🔮พลังงาน: nine of pentacles<br>
+ช่วงนี้ชีวิตพลังงานเต็มไปด้วยความอุดมสมบูรณ์เป็นคนที่เต็มเปี่ยมไปด้วยพลังกายและใจ มีเงิน ใช้ไม่ขาดมือ<br><br>
+
+🧘‍♀️ I have an energetic body and the power to transform myself and my life<br>
+หมายถึง คนที่มีพลังงานเต็มเปี่ยม จงดึงศักยภาพจากภายในออกมา เพื่อเปลี่ยนแปลงชีวิตและตัวเอง ให้รับรู้ถึงพลังงานภายในของตัวเอง ให้มากขึ้นสัมผัสถึงร่างกายที่กำลังบ่งบอกตัวตนของเรา<br><br>
+
+💗 Divine timing<br>
+ตอนนี้ถึงเวลาที่เหมาะสม ให้ลงเริ่มต้นทำอะไรเพื่ออนาคตของเธอเอง trust the process ใครที่ลงมือทำแล้วอย่าพึ่งท้อเพราะจักรวาลกำลังเลือกสรรสิ่งที่ดีที่สุดให้กับคุณ`
+  },
+  {
+    image: "https://drive.google.com/thumbnail?id=16zD_DGzcMvdPdnfbKdL6ez0TDdkLW5ho",
+    name: "The Pink Rose",
+    meaning: `🔮Queen of pentacles<br>
+พลังงานในช่วงนี้ กำลังเศร้าหรือเหงาใจอะไรบางอย่าง เธอมีทรัพย์สินเงินทอง แต่ไม่สามารถมอบความสุขให้เธอได้ เธอต้องการความอบอุ่นและการเอาใจใส่ จากคนรอบข้าง<br><br>
+🧘‍♀️ My mind is clear as a still lake<br>
+ทำสมองและความคิดให้ว่างปล่อยวางทุกความคิดและความรู้สึก จะทำให้ความทุกข์ที่เธอมีเบาบางลง<br><br>
+💗 Self acceptance<br>
+ยอมรับตัวตนของคุณ ความรู้สึกข้างในเล็กๆ ที่ไม่ใช่เสียงจากความคิดภายนอก ให้ฟังเสียงความรู้สึกจริงๆ ของคุณว่าอยากเป็นใคร ให้ยอมรับตัวตนของเธอ`
+  },
+  {
+    image: "https://drive.google.com/thumbnail?id=1P6_6i3o-0160bSBXOT4Ko-PQPhuY_iS0",
+    name: "The Purple Flower",
+    meaning: `🔮The moon<br>
+ช่วงเวลานี้เป็นเวลาของแสงพระจันทร์ ถึงไม่ร้อนแรงแต่มีความอบอุ่นภายในใจ ช่วงนี้มีภาวะสับสนกับความคิดของตัวเอง มีความคิดมากเกือบทุกเรื่องจนมากเกินไป อาจจะมีเรื่องให้กวนใจอยู่ในช่วงเวลานี้<br><br>
+
+🧘‍♀️ I listen the voice of my body. It lets me know exactly what I need.<br>
+ช่วงเวลานี้ให้ฟังเสียงของร่างกายตัวเองว่าเค้าต้องการบอกอะไร เมื่อร่างกายเกิดความเจ็บป่วยหรือมีบางอย่างเกิดขึ้นผิดปกติจงหาสาเหตุของสาเหตุที่ทำให้เราไม่สมดุลย์ ต้องเลิกพฤติกรรมที่ทำร้ายร่างกายตัวเองหรือเปลี่ยน life style<br><br>
+
+💗 Courage and Bravery<br>
+จงกล้าที่จะลงมือทำเปลี่ยนแปลงตัวเอง ไม่กล้าต่อการเปลี่ยนแปลงหรือการเริ่มต้นใหม่`
+  }
+];
+
+    const container = document.getElementById('cardContainer');
+    const meaningBox = document.getElementById('meaningBox');
+    const selectedCardImage = document.getElementById('selectedCardImage');
+    const meaningText = document.getElementById('meaningText');
+    const backButton = document.getElementById('backButton');
+
+    function showCards() {
+  container.innerHTML = '';
+  container.style.opacity = '1';
+  meaningBox.style.display = 'none';
+
+  cardData.forEach((card, index) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <img src="${card.image}" alt="Tarot Card ${index + 1}">
+      <div class="card-name">${card.name}</div>
+    `;
+    div.addEventListener('click', () => showMeaning(card));
+    container.appendChild(div);
+  });
+}
+
+    function showMeaning(card) {
+      container.style.opacity = '0';
+      setTimeout(() => {
+        container.innerHTML = '';
+	document.getElementById('selectedCardName').textContent = card.name;
+        selectedCardImage.innerHTML = `<img src="${card.image}" alt="Selected Card">`;
+        meaningText.innerHTML = card.meaning;
+        meaningBox.style.display = 'block';
+      }, 400);
+    }
+
+    backButton.addEventListener('click', showCards);
+
+    showCards();
+
+
+  </script>
+<div style="margin-top: 60px; font-size: 0.9em; color: #ccc; text-align: center;">
+  WebAppMade by <strong>Horizon</strong><br>
+  Art&Reading by <strong>Astragirl</strong><br>
+  Last update: <strong>8/5/2025</strong>
+</div>
+</body>
+</html>
